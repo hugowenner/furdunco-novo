@@ -1,5 +1,9 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Clock, DollarSign, Ruler } from "lucide-react";
 
+// Dados definidos dentro do arquivo
 const nichosItems = [
   { numero: "01", valor: "R$ 195,00", largura: "60 cm", altura: "35 cm", profundidade: "50 cm", imgSrc: "/assets/nicho01.png" },
   { numero: "02", valor: "R$ 300,00", largura: "60 cm", altura: "70 cm", profundidade: "50 cm", imgSrc: "/assets/nicho02.png" },
@@ -23,15 +27,37 @@ export default function Nichos() {
       <div className="absolute inset-0 bg-brown-800 opacity-90" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-fit mx-auto bg-white/80 backdrop-blur-sm p-4 md:p-6 rounded-lg shadow-2xl mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-fit mx-auto bg-white/80 backdrop-blur-sm p-4 md:p-6 rounded-lg shadow-2xl mb-16"
+        >
           <h2 className="text-4xl font-bold text-center text-brown-800 font-slab">Alugue um Nicho</h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+        </motion.div>
+        
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            visible: { transition: { staggerChildren: 0.15 } }
+          }}
+        >
           {nichosItems.map((nicho, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden flex flex-col">
-              <div className="w-full h-64 overflow-hidden">
-                <img src={nicho.imgSrc} alt={`Nicho ${nicho.numero}`} className="w-full h-full object-cover" />
+            <motion.div
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+              }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
+              className="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden flex flex-col h-full"
+            >
+              <div className="w-full h-64 overflow-hidden relative">
+                <img src={nicho.imgSrc} alt={`Nicho ${nicho.numero}`} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
               </div>
 
               <div className="p-6 flex flex-col flex-grow">
@@ -68,9 +94,9 @@ export default function Nichos() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
